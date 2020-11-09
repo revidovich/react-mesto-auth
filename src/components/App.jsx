@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import ImagePopup from "./ImagePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { api } from "../utils/api";
@@ -22,12 +22,12 @@ function App() {
   const [cards, setCards] = useState([]);
 
 
-  const [loggedIn, setLoggedIn] = useState(true); //поменять потом в конце true!
-  const [userData, setUserData] = useState({ username: '', email: ''});
-  const history = useHistory();
+  const [loggedIn, setLoggedIn] = useState(true); //поменять потом в конце true на false!
+  // const [userData, setUserData] = useState({ username: '', email: ''});
+  // const history = useHistory();
 
   const handleLogin = (userData) => {
-    setUserData(userData);
+    // setUserData(userData);
     setLoggedIn(true);
   }
 
@@ -147,15 +147,17 @@ function App() {
     <div className="page">
       <div className="page__container">
         <CurrentUserContext.Provider value={currentUser}>
+
           <Switch>
               <Header />
-              <ProtectedRoute exact path="/" loggedIn={loggedIn} >
+              <ProtectedRoute exact path="/" loggedIn={loggedIn}
+              >
                 <Main
+                  cards={cards}
                   onEditAvatar={handleEditAvatarClick}
                   onEditProfile={handleEditProfileClick}
                   onAddPlace={handleAddPlaceClick}
                   onCardClick={handleCardClick}
-                  cards={cards}
                   onCardLike={handleCardLike}
                   onCardDelete={handleCardDelete}
                 />
