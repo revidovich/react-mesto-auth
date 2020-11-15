@@ -1,8 +1,8 @@
 import { setToken } from './utils/token';
-export const BASE_URL = 'https://api.nomoreparties.co';
+export const BASE_URL = 'https://auth.nomoreparties.co';
 
 export const register = (email, password) => {
-  return fetch(`${BASE_URL}/auth/local/register`, { //поменять путь
+  return fetch(`${BASE_URL}/sign-up`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -20,7 +20,7 @@ export const register = (email, password) => {
 };
 
 export const authorize = (email, password) => {
-  return fetch(`${BASE_URL}/auth/local`, { //поменять путь
+  return fetch(`${BASE_URL}/sign-in`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -41,7 +41,7 @@ export const authorize = (email, password) => {
 };
 
 export const getContent = (token) => {
-  return fetch(`${BASE_URL}/users/me`, {
+  return fetch(`${BASE_URL}/users/me`, { //здесь наш токен
     method: 'GET',
     headers: {
       'Accept': 'application/json',
@@ -53,4 +53,22 @@ export const getContent = (token) => {
   .catch(err => console.log(err))
 }
 
-
+export function tokenCheck () {
+  const jwt = localStorage.getItem('jwt');
+  if (!jwt) {
+    return;
+  }
+  getContent(jwt)
+    .then((res) => {
+      if (res) {
+        const userData = {
+          id: res.data._id,
+          email: res.data.email
+        }
+        return userData
+      }
+    })
+    .catch((err) => {
+      console.log(`Невалидный токен: ${err}`)
+    });
+}

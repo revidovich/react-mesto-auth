@@ -10,7 +10,7 @@
     white-space: nowrap;
 }
 
-@media screen and (max-width: 882px) {    
+@media screen and (max-width: 890px) {
     .profile__job {
         margin: 6px auto 0;
         font-size: 14px;

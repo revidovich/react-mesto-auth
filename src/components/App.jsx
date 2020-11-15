@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import ImagePopup from "./ImagePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { api } from "../utils/api";
@@ -12,24 +12,29 @@ import AddPlacePopup from "./AddPlacePopup";
 import ProtectedRoute from "./ProtectedRoute";
 import Register from "./Register.jsx";
 import Login from './Login.jsx';
+import InfoTooltip from './InfoTooltip';
+import * as auth from '../auth';
 
 function App() {
+  //окна
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
+  const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
+  // объекты
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
 
   const [loggedIn, setLoggedIn] = useState(true); //поменять потом в конце true на false!
-  // const [userData, setUserData] = useState({ username: '', email: ''});
-  // const history = useHistory();
+  const [userData, setUserData] = useState({email: '', password: ''});
+  // const email = 'bb@bb.com' // удалить потом
 
-  const handleLogin = (userData) => {
-    // setUserData(userData);
-    setLoggedIn(true);
-  }
+  const history = useHistory();
+  const [isSuccess, setIsSuccess] = React.useState(false);
+
+// ----------------------------------------------------------------------------------
 
   useEffect(() => {
     function handleESCclose(evt) {
@@ -63,6 +68,13 @@ function App() {
       });
   }, []);
 
+  useEffect(() => {
+    const userData = auth.tokenCheck();
+    setUserData(userData);
+    history.push('/')
+  }, []);
+
+// ----------------------------------------------------------------------------------
   function handleCardClick(card) {
     setSelectedCard({ ...card, isImgPopupOpen: true });
   }
@@ -75,11 +87,13 @@ function App() {
   function handleAddPlaceClick() {
     setAddPlacePopupOpen(true);
   }
+
   function closeAllPopups(card) {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setSelectedCard({ ...card, isImgPopupOpen: false });
+    setInfoTooltipOpen(false);
   }
 
   function handleUpdateUser({ name, about }) {
@@ -143,13 +157,55 @@ function App() {
       .catch((err) => console.log(err));
   }
 
+  //Auth
+
+  function handleLogin (email, password) {
+    auth.authorize(email, password)
+      .then((res) => {
+        localStorage.setItem('jwt', res.token);
+        auth.tokenCheck();
+        setIsSuccess(true);
+        history.push('/sign-in');
+      })
+      .catch((err) => {
+        setIsSuccess(false);
+        console.log(err);
+      })
+      .finally(() =>{
+        setInfoTooltipOpen(true)
+      })
+  }
+
+  function handleRegister(email, password) {
+    return auth.register(email, password) //????
+      .then(() => {
+        setIsSuccess(true);
+        history.push('/sign-in');
+      })
+      .catch((err) => {
+        setIsSuccess(false);
+        console.log(err);
+      })
+      .finally(() =>{
+        setInfoTooltipOpen(true)
+      })
+  }
+
+  function handleLogOut (userData) {
+    setUserData('');
+    setLoggedIn(false);
+  }
+
+// ----------------------------------------------------------------------------------
   return (
     <div className="page">
       <div className="page__container">
         <CurrentUserContext.Provider value={currentUser}>
-
+              <Header
+                userData={userData}
+                onLogOut={handleLogOut}
+              />
           <Switch>
-              <Header />
               <ProtectedRoute exact path="/" loggedIn={loggedIn}
               >
                 <Main
@@ -163,14 +219,15 @@ function App() {
                 />
                 <Footer />
               </ProtectedRoute>
+
               <Route path="/sign-up">
-                <Register />
+                <Register onRegister={handleRegister} />
               </Route>
+
               <Route path="/sign-in">
-                <section className="popup">
-                  <Login handleLogin={handleLogin} />
-                </section>
+                  <Login onLogin={handleLogin} />
               </Route>
+
               <Route>
                 {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
               </Route>
@@ -186,6 +243,11 @@ function App() {
                 isOpen={isEditAvatarPopupOpen}
                 onClose={closeAllPopups}
                 onUpdateAvatar={handleUpdateAvatar}
+              />
+              <InfoTooltip
+                isOpen={isInfoTooltipOpen}
+                onClose={closeAllPopups}
+                isSuccess={isSuccess}
               />
               <AddPlacePopup
                 isOpen={isAddPlacePopupOpen}

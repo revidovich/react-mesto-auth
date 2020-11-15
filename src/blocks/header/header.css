@@ -1,8 +1,15 @@
 @import url('./__logo/header__logo.css');
+@import url('./__exit/header__exit.css');
+@import url('./__burger/header__burger.css');
+@import url('./__exit/_grey/header__exit_grey.css');
 
 .header{
-    width: 882px;
+    width: 890px;
+    height: 119px;
     max-width: 100%;
     margin: 0;
+    padding-top: 4px;
     border-bottom: 1px solid rgba(84, 84, 84, .7);
+    display: flex;
+    justify-content: space-between;
 }

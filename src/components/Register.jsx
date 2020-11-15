@@ -4,13 +4,12 @@ import { Link, useHistory } from 'react-router-dom';
 // import * as duckAuth from '../duckAuth.jsx';
 
 
-const Register = () => {
+const Register = (props) => {
   const [data, setData] = useState( {
-    username: '',
     email: '',
-    password: '',
-    confirmPassword: '',
+    password: ''
   });
+
   const [message, setMessage] = useState('');
   const history = useHistory();
 
@@ -22,9 +21,11 @@ const Register = () => {
     }));
   }
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     const { username, email, password, confirmPassword } = data;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { email, password } = data;
+    props.onRegister(data.password, data.email);
+    setData({email: '', password: ''});
 //     if (password === confirmPassword){
 //       duckAuth.register(username, password, email).then((res) => {
 //         if(res.statusCode !== 400){
@@ -35,21 +36,47 @@ const Register = () => {
 //         }
 //       });
 //     }
-//   }
+// });
+    // }
+  }
 
   return(
-    <section className="register">
-            <form className="register__form">
-      <h1 className="register__welcome">Вход</h1>
-        <input className="register__input" id="email" name="email" type="email"  />
-        <input className="register__input" id="password" name="password" type="password"  />
-          <button type="submit" className="register__link">Зарегистрироваться</button>
-      </form>
-      <div className="register__signin">
-        <p>Уже зарегистрированы?</p>
-        <Link to="login" className="register__login-link">Войти</Link>
-      </div>
-    </section>
+    <form
+      className="authform"
+      onSubmit={handleSubmit}
+      name="register"
+    >
+    <h1
+      className="authform__title"
+    >Регистрация
+    </h1>
+      <input
+        className="authform__input"
+        id="email"
+        name="email"
+        type="email"
+        placeholder="E-mail"
+        onChange={handleChange}
+      />
+      <input
+        className="authform__input"
+        value={data.password}
+        id="password"
+        name="password"
+        type="password"
+        placeholder="Пароль"
+        onChange={handleChange}
+      />
+        <button
+          type="submit"
+          className="authform__button"
+        >Зарегистрироваться
+        </button>
+    <div className="authform__signin">
+      <p className="authform__then-link">Уже зарегистрированы?</p>
+      <Link to="sign-in" className="authform__then-link hover-style">Войти</Link>
+    </div>
+    </form>
   )
 }
 

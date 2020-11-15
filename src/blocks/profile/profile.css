@@ -6,7 +6,7 @@
 @import url('./__add-button/profile__add-button.css');
 
 .profile{
-    max-width: 882px;
+    max-width: 890px;
     width: 95vw;
     margin: 0 auto;
     padding: 36px 0 47px;
@@ -16,7 +16,7 @@
     align-items: center;
 }
 
-@media screen and (max-width: 882px) {
+@media screen and (max-width: 890px) {
     .profile {
         padding: 36px 0 0;
         grid-template-columns: 1fr minmax(1px, auto) min-content 1fr;

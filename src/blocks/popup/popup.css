@@ -1,3 +1,4 @@
+/* @import url('./__close/popup__close.css'); */
 @import url('./__close/popup__close.css');
 @import url('./__close/_figure/popup__close_figure.css');
 @import url('./__form/popup__form.css');
@@ -24,5 +25,5 @@
   background: rgba(0, 0, 0, .5);
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s, opacity .5s, linear .5s 
+  transition: visibility 0s, opacity .5s, linear .5s
 }

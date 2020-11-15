@@ -10,7 +10,7 @@
     white-space: nowrap;
 }
 
-@media screen and (max-width: 882px) {
+@media screen and (max-width: 890px) {
     .profile__name {
         font-size: 27px;
         text-align: center;

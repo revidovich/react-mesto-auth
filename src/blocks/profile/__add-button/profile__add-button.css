@@ -11,7 +11,7 @@
     background: url(../../../images/plus.svg) center no-repeat;
 }
 
-@media screen and (max-width: 882px) { /*мобильные*/
+@media screen and (max-width: 890px) { /*мобильные*/
     .profile__add-button {
         max-width: 100%;
         width: 282px;

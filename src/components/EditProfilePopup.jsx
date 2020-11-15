@@ -4,10 +4,10 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser} ) {
   const currentUser = React.useContext(CurrentUserContext);
-  
+
   // добавьте стейт-переменные name и description и привяжите их к полям ввода, сделав их управляемыми.
   const [name, setName] = useState('');
-  const [description, setDescription] = useState('');  
+  const [description, setDescription] = useState('');
 
   useEffect(() => {  // После загрузки текущего пользователя из API его данные будут использованы в управляемых компонентах.
     setName(currentUser.name);
@@ -20,7 +20,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser} ) {
       : setDescription(e.target.value);
   }
 
-  function handleSubmit(e) {    
+  function handleSubmit(e) {
     e.preventDefault();      // Передаём значения управляемых компонентов во внешний обработчик
     onUpdateUser({
       name,

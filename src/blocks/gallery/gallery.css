@@ -4,7 +4,7 @@
     grid-gap: 20px 18px;
     justify-content: center; /*это нужно*/
     width: 95vw;
-    max-width: 882px;
+    max-width: 890px;
     margin: 0 auto; /*и это одновременно тоже нужно*/
     padding: 0;
     list-style: none;

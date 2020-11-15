@@ -3,24 +3,70 @@ import { Link, useHistory } from 'react-router-dom';
 import { setToken } from '../utils/token';
 // import * as duckAuth from '../duckAuth.jsx';
 
-const Login = () => {
+const Login = (props) => {
+  const [data, setData] = useState({
+    email: '',
+    password: '',
+  });
 
+  function handleChange (e) {
+    const name = e.target.name;
+    setData({...data, [name]: e.target.value});
+  }
+
+  function handleSubmit (e) {
+    e.preventDefault();
+    props.onLogin(data.email, data.password);
+    setData({email: '', password: ''});
+  }
+//не отображается!!!!!!!!!!!
   return (
-    <section className="register">
-      <form className="register__form">
-      <h1 className="register__welcome">Вход</h1>
-        <input className="register__input" id="email" name="email" type="email"  />
-        <input className="register__input" id="password" name="password" type="password"  />
-          <button type="submit" className="register__link">Зарегистрироваться</button>
-      </form>
-      <div className="register__signin">
-        <p>Ещё не зарегистрированы?</p>
-        <Link to="sign-up" className="register__login-link">Регистрация</Link>
+      <form
+        className="authform"
+        onSubmit={handleSubmit}
+        name="login"
+      >
+      <h1
+        className="authform__title"
+      >Вход</h1>
+        <input
+          className="authform__input"
+          placeholder="E-mail"
+          value={data.email}
+          id="email"
+          name="email"
+          type="email"
+          onChange={handleChange}
+        />
+        <input
+          className="authform__input"
+          id="password"
+          name="password"
+          type="password"
+          value={data.password}
+          placeholder="Пароль"
+          onChange={handleChange}
+        />
+        <button
+          type="submit"
+          className="authform__button"
+        >Зарегистрироваться
+        </button>
+      <div className="authform__signin"
+      >
+        <p
+          className="authform__then-link"
+        >Ещё не зарегистрированы?
+        </p>
+        <Link
+          to="sign-up"
+          className="authform__then-link hover-style"
+        >Регистрация
+        </Link>
       </div>
-    </section>
-
+      </form>
   )
 }
 
 export default Login;
-//скопировала из регистер
+//= из регистер

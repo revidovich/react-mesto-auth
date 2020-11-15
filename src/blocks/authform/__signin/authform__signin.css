@@ -1,4 +1,8 @@
-.register__signin {
+.authform__signin {
+  width: 100%;
+  justify-content: space-evenly;
+  margin-top: 15px;
+  display: inline-flex;
   font-family: Inter;
   font-size: 14px;
   font-style: normal;

@@ -19,7 +19,7 @@
     opacity: 1;
 }
 
-@media screen and (max-width: 882px) {    /*мобильные*/
+@media screen and (max-width: 890px) {    /*мобильные*/
     .profile__photobtn {
         margin: 0 auto 26px;
     }

@@ -1,0 +1,19 @@
+@import url("./__input/authform__input.css");
+@import url("./__title/authform__title.css");
+@import url("./__button/authform__button.css");
+@import url("./__signin/authform__signin.css");
+@import url("./__then-link/authform__then-link.css");
+
+.authform {
+  display: flex;
+  margin: 0;
+  flex-direction: column;
+  width: 358px;
+  padding: 80px 0;
+}
+
+@media screen and (max-width: 890px) {
+  .authform {
+    width: 260px;
+  }
+}

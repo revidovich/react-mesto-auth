@@ -1,0 +1,25 @@
+.authform__input {
+  width: 100%;
+  height: 27px;
+  margin-bottom: 30px;
+  line-height: 17px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-bottom: 2px solid #CCCCCC;
+  outline: none;
+}
+
+.authform__input:focus{
+  outline-width: 0;
+}
+
+.authform__input::-webkit-input-placeholder, .authform__input::-moz-placeholder, .authform__input::-ms-input-placeholder, .authform__input::placeholder{
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  color: #CCCCCC;
+}
+

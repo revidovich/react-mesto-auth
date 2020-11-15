@@ -10,7 +10,7 @@
 @import url('./blocks/popup/popup.css');
 @import url('./blocks/popup/_is-opened/popup_is-opened.css');
 @import url('./blocks/hover-style/hover-style.css');
-@import url('./blocks/register/register.css');
+@import url('./blocks/authform/authform.css');
 
 /* *{
     outline: 1px solid red;

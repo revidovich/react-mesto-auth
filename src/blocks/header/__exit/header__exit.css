@@ -1,0 +1,18 @@
+.header__exit {
+  margin: 0 0 0 24px;
+  color: #fff;
+  text-decoration: none;
+
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: right;
+}
+
+@media all and (max-width: 890px) {
+  .header__exit {
+      margin-right: 30px;
+  }
+}
