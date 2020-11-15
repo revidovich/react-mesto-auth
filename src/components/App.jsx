@@ -27,11 +27,10 @@ function App() {
   const [cards, setCards] = useState([]);
 
   const [loggedIn, setLoggedIn] = useState(false); //поменять потом в конце true на false!
-  // const [userData, setUserData] = useState({email: '', password: ''});
   const [email, setEmail] = useState('bb@bb.com') // удалить потом
 
   const history = useHistory();
-  const [isSuccess, setIsSuccess] = React.useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
 // ----------------------------------------------------------------------------------
 
@@ -66,10 +65,6 @@ function App() {
         console.log(`${err}`);
       });
   }, []);
-
-  useEffect(() => {
-    tokenCheck();
-  });
 
 // ----------------------------------------------------------------------------------
   function handleCardClick(card) {
@@ -159,7 +154,7 @@ function App() {
   function handleLogin (email, password) {
     auth.authorize(email, password)
       .then((res) => {
-        tokenCheck();
+        // tokenCheck();
         localStorage.setItem('jwt', res.token);
         setIsSuccess(true);
         setEmail(email)
@@ -169,24 +164,24 @@ function App() {
         setIsSuccess(false);
         console.log(err);
       })
-      .finally(() =>{
-        setInfoTooltipOpen(true)
-      })
+      // .finally(() =>{
+      //   setInfoTooltipOpen(true)
+      // })
   }
 
   function handleRegister(email, password) {
     auth.register(email, password) //????
       .then(() => {
-        setIsSuccess(true);
         history.push('/sign-in');
+        setIsSuccess(true);
       })
       .catch((err) => {
-        setIsSuccess(false);
         console.log(err);
+        setIsSuccess(false);
       })
-      .finally(() =>{
-        setInfoTooltipOpen(true)
-      })
+      // .finally(() =>{
+      //   setInfoTooltipOpen(true)
+      // })
   }
 
   function handleLogOut () {
@@ -195,27 +190,38 @@ function App() {
     setLoggedIn(false);
     localStorage.removeItem('jwt');
   }
+  // const [tokenCheck, setTokenCheck] = React.useState("false");
+  // useEffect(() => {
+  //   tokenCheck();
+  // }, [tokenCheck]);
 
-  function tokenCheck() { //проверка токена на валидность
+  function tokenCheck() {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
       auth.getContent(jwt)
         .then((res) => {
           if (res) {
             setLoggedIn(true);
-            setEmail( res.data.email); //
-            history.push('/');
+            //setEmail( res.data.email);
+            // history.push('/');
           }
         })
         .catch((err) => {
           console.log(err);
+          setLoggedIn(false);
         })
     }
   }
+
+  useEffect(() => {
+    tokenCheck();
+  }, []);
+
+
 // ----------------------------------------------------------------------------------
   return (
-  <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
+  <CurrentUserContext.Provider value={currentUser}>
       <div className="page__container">
         <Header
           email={email}
@@ -225,8 +231,9 @@ function App() {
           <Switch>
               <ProtectedRoute
                   exact path={'/'}
-                  component={Main}
                   loggedIn={loggedIn}
+              >
+                <Main
                   cards={cards}
                   onEditAvatar={handleEditAvatarClick}
                   onEditProfile={handleEditProfileClick}
@@ -234,7 +241,10 @@ function App() {
                   onCardClick={handleCardClick}
                   onCardLike={handleCardLike}
                   onCardDelete={handleCardDelete}
-              />
+                  />
+                <Footer />
+              </ProtectedRoute>
+
               <Route>
                 {loggedIn ? <Redirect to='/' /> : <Redirect to='/sign-in' />}
               </Route>
@@ -251,8 +261,6 @@ function App() {
                   />
               </Route>
           </Switch>
-
-              <Footer />
 
               <ImagePopup
                 card={selectedCard}
@@ -279,8 +287,8 @@ function App() {
                 onAddPlace={handleAddPlaceSubmit}
               />
       </div>
-    </div>
   </CurrentUserContext.Provider>
+    </div>
   );
 }
 export default App;

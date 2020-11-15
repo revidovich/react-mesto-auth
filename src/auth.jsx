@@ -1,4 +1,4 @@
-import { setToken } from './utils/token';
+// import { setToken } from './utils/token';
 export const BASE_URL = 'https://auth.nomoreparties.co';
 
 export const register = (email, password) => {
@@ -40,16 +40,12 @@ export const authorize = (email, password) => {
     },
     body: JSON.stringify({email, password})
   })
-  .then((response => response.json()))
-  .then((data) => {
-    if (data.user){
-      setToken(data.jwt);
-      return data;
-    } else {
-      return;
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
     }
+    return Promise.reject(`error${res.status}`);
   })
-  .catch(err => console.log(err))
 };
 
 export const getContent = (token) => {
@@ -61,8 +57,12 @@ export const getContent = (token) => {
       'Authorization': `Bearer ${token}`,
     }
   })
-  .then(res => res.json())
-  .catch(err => console.log(err))
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`error${res.status}`);
+  })
 }
 
 // export function tokenCheck () {
