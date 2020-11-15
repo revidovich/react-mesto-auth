@@ -11,12 +11,24 @@ export const register = (email, password) => {
     body: JSON.stringify({email,password})
   })
   .then((response) => {
+    if (!response.ok) {
+      if (response.status ===400){
+        return Promise.reject({
+          status: response.status,
+          message: "некорректно заполнено поле"
+        })
+        // return Promise.reject({
+        //   status: response.status,
+        //   message: response.statusText
+        // })
+      }
+    }
     return response.json();
   })
-  .then((res) => {
-    return res;
-  })
-  .catch((err) => console.log(err));
+  // .then((res) => {
+  //   return res;
+  // })
+  // .catch((err) => console.log(err));
 };
 
 export const authorize = (email, password) => {
@@ -53,22 +65,22 @@ export const getContent = (token) => {
   .catch(err => console.log(err))
 }
 
-export function tokenCheck () {
-  const jwt = localStorage.getItem('jwt');
-  if (!jwt) {
-    return;
-  }
-  getContent(jwt)
-    .then((res) => {
-      if (res) {
-        const userData = {
-          id: res.data._id,
-          email: res.data.email
-        }
-        return userData
-      }
-    })
-    .catch((err) => {
-      console.log(`Невалидный токен: ${err}`)
-    });
-}
+// export function tokenCheck () {
+//   const jwt = localStorage.getItem('jwt');
+//   if (!jwt) {
+//     return;
+//   }
+//   getContent(jwt)
+//     .then((res) => {
+//       if (res) {
+//         const userData = {
+//           id: res.data._id,
+//           email: res.data.email
+//         }
+// //         return userData
+//       }
+//     })
+//     .catch((err) => {
+//       console.log(`Невалидный токен: ${err}`)
+//     });
+// }

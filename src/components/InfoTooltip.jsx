@@ -8,7 +8,7 @@ function InfoTooltip (props) {
     <InfoTooltip
         isOpen={props.isOpen}
         onClose={props.onClose}
-        className={`popup_is-opened ${props.isOpen
+        className={`popup ${props.isOpen
           ? 'popup_is-opened'
           : ''
         }`}

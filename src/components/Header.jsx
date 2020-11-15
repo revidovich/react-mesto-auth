@@ -26,7 +26,9 @@ function Header(props) {
             >
               {props.userData.email}
             </p>
-            <Link to="./sign-in" className='header__exit header__exit_grey hover-style'
+            <Link
+            to="./sign-in"
+            className='header__exit header__exit_grey hover-style'
             onClick={props.onLogOut} >
               Выйти
             </Link>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { setToken } from '../utils/token';
+import { Link } from 'react-router-dom';
+// import { setToken } from '../utils/token';
 // import * as duckAuth from '../duckAuth.jsx';
 
 const Login = (props) => {
@@ -17,7 +17,7 @@ const Login = (props) => {
   function handleSubmit (e) {
     e.preventDefault();
     props.onLogin(data.email, data.password);
-    setData({email: '', password: ''});
+    // setData({email: '', password: ''});
   }
 //не отображается!!!!!!!!!!!
   return (

@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-// import Logo from './Logo.jsx';
-// import * as duckAuth from '../duckAuth.jsx';
-
+import { Link } from 'react-router-dom';
 
 const Register = (props) => {
   const [data, setData] = useState( {
@@ -10,10 +7,7 @@ const Register = (props) => {
     password: ''
   });
 
-  const [message, setMessage] = useState('');
-  const history = useHistory();
-
-  const handleChange = (e) => {
+  function handleChange (e) {
     const {name, value} = e.target;
     setData((prevData) => ({
       ...prevData,
@@ -21,23 +15,10 @@ const Register = (props) => {
     }));
   }
 
-  const handleSubmit = (e) => {
+  function handleSubmit (e) {
     e.preventDefault();
-    const { email, password } = data;
     props.onRegister(data.password, data.email);
     setData({email: '', password: ''});
-//     if (password === confirmPassword){
-//       duckAuth.register(username, password, email).then((res) => {
-//         if(res.statusCode !== 400){
-//           setMessage('');
-//           history.push('/login');
-//         } else {
-//           setMessage('Что-то пошло не так!')
-//         }
-//       });
-//     }
-// });
-    // }
   }
 
   return(
@@ -54,15 +35,16 @@ const Register = (props) => {
         className="authform__input"
         id="email"
         name="email"
+        value={data.email}
         type="email"
         placeholder="E-mail"
         onChange={handleChange}
       />
       <input
         className="authform__input"
-        value={data.password}
         id="password"
         name="password"
+        value={data.password}
         type="password"
         placeholder="Пароль"
         onChange={handleChange}

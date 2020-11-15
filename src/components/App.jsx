@@ -26,10 +26,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
-
-  const [loggedIn, setLoggedIn] = useState(true); //поменять потом в конце true на false!
-  const [userData, setUserData] = useState({email: '', password: ''});
-  // const email = 'bb@bb.com' // удалить потом
+  const [loggedIn, setLoggedIn] = useState(false); //поменять потом в конце true на false!
+  // const [userData, setUserData] = useState({email: '', password: ''});
+  const [email, setEmail] = useState('bb@bb.com') // удалить потом
 
   const history = useHistory();
   const [isSuccess, setIsSuccess] = React.useState(false);
@@ -69,10 +68,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const userData = auth.tokenCheck();
-    setUserData(userData);
-    history.push('/')
-  }, []);
+    tokenCheck();
+  });
 
 // ----------------------------------------------------------------------------------
   function handleCardClick(card) {
@@ -162,10 +159,11 @@ function App() {
   function handleLogin (email, password) {
     auth.authorize(email, password)
       .then((res) => {
+        tokenCheck();
         localStorage.setItem('jwt', res.token);
-        auth.tokenCheck();
         setIsSuccess(true);
-        history.push('/sign-in');
+        setEmail(email)
+        history.push('/');
       })
       .catch((err) => {
         setIsSuccess(false);
@@ -177,7 +175,7 @@ function App() {
   }
 
   function handleRegister(email, password) {
-    return auth.register(email, password) //????
+    auth.register(email, password) //????
       .then(() => {
         setIsSuccess(true);
         history.push('/sign-in');
@@ -191,24 +189,44 @@ function App() {
       })
   }
 
-  function handleLogOut (userData) {
-    setUserData('');
+  function handleLogOut () {
+    setEmail('');
+    setIsSuccess(false)
     setLoggedIn(false);
+    localStorage.removeItem('jwt');
   }
 
+  function tokenCheck() { //проверка токена на валидность
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      auth.getContent(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            setEmail( res.data.email); //
+            history.push('/');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    }
+  }
 // ----------------------------------------------------------------------------------
   return (
+  <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
       <div className="page__container">
-        <CurrentUserContext.Provider value={currentUser}>
-              <Header
-                userData={userData}
-                onLogOut={handleLogOut}
-              />
+        <Header
+          email={email}
+          onLogOut={handleLogOut}
+        />
+
           <Switch>
-              <ProtectedRoute exact path="/" loggedIn={loggedIn}
-              >
-                <Main
+              <ProtectedRoute
+                  exact path={'/'}
+                  component={Main}
+                  loggedIn={loggedIn}
                   cards={cards}
                   onEditAvatar={handleEditAvatarClick}
                   onEditProfile={handleEditProfileClick}
@@ -216,24 +234,30 @@ function App() {
                   onCardClick={handleCardClick}
                   onCardLike={handleCardLike}
                   onCardDelete={handleCardDelete}
-                />
-                <Footer />
-              </ProtectedRoute>
+              />
+              <Route>
+                {loggedIn ? <Redirect to='/' /> : <Redirect to='/sign-in' />}
+              </Route>
 
               <Route path="/sign-up">
-                <Register onRegister={handleRegister} />
+                <Register
+                onRegister={handleRegister}
+                />
               </Route>
 
               <Route path="/sign-in">
-                  <Login onLogin={handleLogin} />
-              </Route>
-
-              <Route>
-                {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+                  <Login
+                  onLogin={handleLogin}
+                  />
               </Route>
           </Switch>
 
-              <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+              <Footer />
+
+              <ImagePopup
+                card={selectedCard}
+                onClose={closeAllPopups}
+              />
               <EditProfilePopup
                 isOpen={isEditProfilePopupOpen}
                 onClose={closeAllPopups}
@@ -254,14 +278,9 @@ function App() {
                 onClose={closeAllPopups}
                 onAddPlace={handleAddPlaceSubmit}
               />
-        </CurrentUserContext.Provider>
       </div>
     </div>
+  </CurrentUserContext.Provider>
   );
 }
 export default App;
-// 1. Создайте нужные роуты и опишите перенаправления
-// Вся функциональность вашего приложения будет доступна только авторизованным пользователям. Поэтому реализуйте два дополнительных роута:
-// /sign-up — для регистрации пользователя;
-// /sign-in — для авторизации пользователя.
-// Если неавторизованный пользователь приходит на сайт, он должен попадать на страницу входа, на какой бы роут он не пришёл. ProtectedRoute
