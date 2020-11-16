@@ -26,7 +26,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
-  const [loggedIn, setLoggedIn] = useState(true); //поменять потом в конце true на false!
+  const [loggedIn, setLoggedIn] = useState(false); //поменять потом в конце true на false!
   const [email, setEmail] = useState('') // удалить потом bb@bb.com
 
   const history = useHistory();
