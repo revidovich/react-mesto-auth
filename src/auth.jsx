@@ -64,23 +64,3 @@ export const getContent = (token) => {
     return Promise.reject(`error${res.status}`);
   })
 }
-
-// export function tokenCheck () {
-//   const jwt = localStorage.getItem('jwt');
-//   if (!jwt) {
-//     return;
-//   }
-//   getContent(jwt)
-//     .then((res) => {
-//       if (res) {
-//         const userData = {
-//           id: res.data._id,
-//           email: res.data.email
-//         }
-// //         return userData
-//       }
-//     })
-//     .catch((err) => {
-//       console.log(`Невалидный токен: ${err}`)
-//     });
-// }

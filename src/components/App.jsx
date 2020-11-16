@@ -154,11 +154,11 @@ function App() {
   function handleLogin (email, password) {
     auth.authorize(email, password)
       .then((res) => {
-        // tokenCheck();
-        localStorage.setItem('jwt', res.token);
-        setIsSuccess(true);
-        setEmail(email)
-        history.push('/');
+        if (res.token) {// tokenCheck();
+          localStorage.setItem('token', res.token);
+          setIsSuccess(true);
+          setEmail(email)
+          history.push('/');}
       })
       .catch((err) => {
         setIsSuccess(false);
@@ -188,12 +188,9 @@ function App() {
     setEmail('');
     setIsSuccess(false)
     setLoggedIn(false);
-    localStorage.removeItem('jwt');
+    localStorage.removeItem('token');
+    history.push('/sign-in');
   }
-  // const [tokenCheck, setTokenCheck] = React.useState("false");
-  // useEffect(() => {
-  //   tokenCheck();
-  // }, [tokenCheck]);
 
   function tokenCheck() {
     const jwt = localStorage.getItem('jwt');

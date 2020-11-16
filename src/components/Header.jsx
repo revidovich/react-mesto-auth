@@ -24,7 +24,7 @@ function Header(props) {
           <Route exact path="/">
             <p className='header__email hover-style'
             >
-              {props.userData.email}
+              props.email
             </p>
             <Link
             to="./sign-in"

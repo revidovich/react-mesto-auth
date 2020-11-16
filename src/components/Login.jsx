@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { setToken } from '../utils/token';
-// import * as duckAuth from '../duckAuth.jsx';
 
 const Login = (props) => {
   const [data, setData] = useState({
@@ -69,4 +67,3 @@ const Login = (props) => {
 }
 
 export default Login;
-//= из регистер
