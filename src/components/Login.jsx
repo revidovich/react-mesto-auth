@@ -15,9 +15,9 @@ const Login = (props) => {
   function handleSubmit (e) {
     e.preventDefault();
     props.onLogin(data.email, data.password);
-    // setData({email: '', password: ''});
+    setData({email: '', password: ''});
   }
-//не отображается!!!!!!!!!!!
+
   return (
       <form
         className="authform"
@@ -35,6 +35,7 @@ const Login = (props) => {
           name="email"
           type="email"
           onChange={handleChange}
+          autoComplete="true"
         />
         <input
           className="authform__input"
@@ -48,7 +49,7 @@ const Login = (props) => {
         <button
           type="submit"
           className="authform__button"
-        >Зарегистрироваться
+        >Войти
         </button>
       <div className="authform__signin"
       >

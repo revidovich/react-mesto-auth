@@ -1,4 +1,5 @@
-/* @import url('./__close/popup__close.css'); */
+@import url('./__info/popup__info.css');
+@import url('./__union/popup__union.css');
 @import url('./__close/popup__close.css');
 @import url('./__close/_figure/popup__close_figure.css');
 @import url('./__form/popup__form.css');
@@ -19,9 +20,7 @@
   top: 0;
   left: 0;
   align-items: center;
-
   justify-content: center;
-
   background: rgba(0, 0, 0, .5);
   visibility: hidden;
   opacity: 0;

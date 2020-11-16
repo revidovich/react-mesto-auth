@@ -26,8 +26,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
 
-  const [loggedIn, setLoggedIn] = useState(false); //поменять потом в конце true на false!
-  const [email, setEmail] = useState('bb@bb.com') // удалить потом
+  const [loggedIn, setLoggedIn] = useState(true); //поменять потом в конце true на false!
+  const [email, setEmail] = useState('') // удалить потом bb@bb.com
 
   const history = useHistory();
   const [isSuccess, setIsSuccess] = useState(false);
@@ -161,12 +161,16 @@ function App() {
           history.push('/');}
       })
       .catch((err) => {
+        if (err === 'error400') {
+          console.log('Не передано одно из полей: ' + err);
+        } else if (err === 'error401') {
+          console.log('Пользователь с таким email не найден: ' + err);
+        }
         setIsSuccess(false);
-        console.log(err);
       })
-      // .finally(() =>{
-      //   setInfoTooltipOpen(true)
-      // })
+      .finally(() =>{
+        setInfoTooltipOpen(true)
+      })
   }
 
   function handleRegister(email, password) {
@@ -176,12 +180,16 @@ function App() {
         setIsSuccess(true);
       })
       .catch((err) => {
-        console.log(err);
+        if (err === 'error400') {
+          console.log('Не передано одно из полей: ' + err);
+        } else if (err === 'error401') {
+          console.log('Пользователь с таким email не найден: ' + err);
+        }
         setIsSuccess(false);
       })
-      // .finally(() =>{
-      //   setInfoTooltipOpen(true)
-      // })
+      .finally(() =>{
+        setInfoTooltipOpen(true)
+      })
   }
 
   function handleLogOut () {
@@ -242,10 +250,6 @@ function App() {
                 <Footer />
               </ProtectedRoute>
 
-              <Route>
-                {loggedIn ? <Redirect to='/' /> : <Redirect to='/sign-in' />}
-              </Route>
-
               <Route path="/sign-up">
                 <Register
                 onRegister={handleRegister}
@@ -256,6 +260,10 @@ function App() {
                   <Login
                   onLogin={handleLogin}
                   />
+              </Route>
+
+              <Route>
+                {loggedIn ? <Redirect to='/' /> : <Redirect to='/sign-in' />}
               </Route>
           </Switch>
 

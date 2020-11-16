@@ -1,0 +1,7 @@
+.popup__union{
+  display: flex;
+  margin: 50px auto 0;
+  width: 120px;
+  height: 120px;
+  justify-self: center;
+}

@@ -4,18 +4,13 @@ import Regerr from '../images/union-error.svg';
 
 function InfoTooltip (props) {
 
-          //
   return (
     <section
-        className={`popup popup_tooltip`}
-  // ${props.isOpen
-  //   ? 'popup_is-opened'
-  //   : ''
-  // }`
+        className={`popup ${props.isOpen} ? 'popup_is-opened' : '' `}
     >
-    <div>
+    <div className="popup__form">
         <img
-          className=""
+          className="popup__union"
           alt="union"
           src={`${ props.isSuccess ? Regsucs : Regerr }`}
         />
@@ -26,9 +21,8 @@ function InfoTooltip (props) {
           }
         </p>
         <button
+          className='popup__close popup__close_figure hover-style' type='button'
           onClick={props.onClose}
-          className="popup__close-button popup__close-button_up"
-          type="button"
         />
         </div>
     </section>

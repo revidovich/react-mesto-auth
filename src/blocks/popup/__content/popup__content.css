@@ -1,8 +1,6 @@
 .popup__content {
-  width: 83%;
+  width: 350px;
   max-height: 100%;
-  /* margin: 34px auto 36px; */
-  margin: 7.6% auto 8.6%;
   border: none;
-  padding: 0;
+  padding: 34px 36px 36.5px;
 }
