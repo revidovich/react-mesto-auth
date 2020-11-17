@@ -8,27 +8,16 @@ export const register = (email, password) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({email,password})
+    body: JSON.stringify({email, password})
   })
-  .then((response) => {
-    if (!response.ok) {
-      if (response.status ===400){
-        return Promise.reject({
-          status: response.status,
-          message: "некорректно заполнено поле"
-        })
-        // return Promise.reject({
-        //   status: response.status,
-        //   message: response.statusText
-        // })
-      }
+  .then((res) => {
+    if (res.ok) {
+      console.log(`успешная регистрация, статус ${res.status}`)
+      return res.json();
     }
-    return response.json();
+    console.log(`к сожалению у вас реджект, ошибка ${res.status}`)
+    return Promise.reject(res.status);//значение параметра err в блоке catch будет тождественно равно этому аргументу, err===res.status
   })
-  // .then((res) => {
-  //   return res;
-  // })
-  // .catch((err) => console.log(err));
 };
 
 export const authorize = (email, password) => {
@@ -44,7 +33,7 @@ export const authorize = (email, password) => {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`error${res.status}`);
+    return Promise.reject(res.status);
   })
 };
 
@@ -61,6 +50,6 @@ export const getContent = (token) => {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`error${res.status}`);
+    return Promise.reject(res.status);
   })
 }

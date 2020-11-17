@@ -13,10 +13,10 @@ import ProtectedRoute from "./ProtectedRoute";
 import Register from "./Register.jsx";
 import Login from './Login.jsx';
 import InfoTooltip from './InfoTooltip';
-import * as auth from '../auth';
+import * as auth from '../utils/auth';
 
 function App() {
-  //окна
+  // окна
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
@@ -25,35 +25,12 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
-
-  const [loggedIn, setLoggedIn] = useState(false); //поменять потом в конце true на false!
-  const [email, setEmail] = useState('') // удалить потом bb@bb.com
-
-  const history = useHistory();
+  const [loggedIn, setLoggedIn] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [email, setEmail] = useState(null)
+  const history = useHistory();
 
 // ----------------------------------------------------------------------------------
-
-  useEffect(() => {
-    function handleESCclose(evt) {
-      if (evt.key === "Escape") {
-        closeAllPopups();
-      }
-    }
-    document.addEventListener("keydown", handleESCclose);
-    return () => {
-      document.removeEventListener("keydown", handleESCclose);
-    };
-  }, []);
-
-  // useEffect(() => {
-  //   function handleOverlayClose(evt) {
-  //     if (evt.currentTarget !== evt.target) {
-  //       closeAllPopups();
-  //     }
-  //   }
-  //   document.querySelector('.popup_is-opened').addEventListener('click', handleOverlayClose);
-  // }, [])
 
   useEffect(() => {
     Promise.all([api.getUserData(), api.getInitialItems()])
@@ -67,6 +44,14 @@ function App() {
   }, []);
 
 // ----------------------------------------------------------------------------------
+
+  function closeAllPopups(card) {
+    setEditAvatarPopupOpen(false);
+    setEditProfilePopupOpen(false);
+    setAddPlacePopupOpen(false);
+    setInfoTooltipOpen(false);
+    setSelectedCard({ ...card, isImgPopupOpen: false });     //  не подходит setSelectedCard(false); - оно закрывается не плавно, а сразу скидывает фотку на фолз. мне же надо оставить фотку, но изменить состояние. лучше разделить попап и лайтбокс и написать разную логику закрытия, но я пока не знаю какую. если в юзэффекте нет зависимостей, то фотка закрывается плавно и в нетворке нет движения. Если зависимость есть [], как нам рекомендовал ваш главный ревьюер делать на вебинаре, то закрытие с андефайндом и запрос к серверу, да, спасибо что сказали
+  }
   function handleCardClick(card) {
     setSelectedCard({ ...card, isImgPopupOpen: true });
   }
@@ -79,15 +64,6 @@ function App() {
   function handleAddPlaceClick() {
     setAddPlacePopupOpen(true);
   }
-
-  function closeAllPopups(card) {
-    setEditAvatarPopupOpen(false);
-    setEditProfilePopupOpen(false);
-    setAddPlacePopupOpen(false);
-    setSelectedCard({ ...card, isImgPopupOpen: false });
-    setInfoTooltipOpen(false);
-  }
-
   function handleUpdateUser({ name, about }) {
     api
       .patchUserData({ name, about })
@@ -99,7 +75,6 @@ function App() {
         console.log(`${err}`);
       });
   }
-
   function handleUpdateAvatar(avatar) {
     //{avatar: 'https://pictures.jpg'}
     api
@@ -126,7 +101,6 @@ function App() {
         console.log(`${err}`);
       });
   }
-
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     api
@@ -139,7 +113,6 @@ function App() {
         console.log(`${err}`);
       });
   }
-
   function handleCardDelete(card) {
     api
       .deleteItem(card._id)
@@ -156,17 +129,17 @@ function App() {
       .then((res) => {
         if (res.token) {// tokenCheck();
           setIsSuccess(true) //обязательное поле
-          localStorage.setItem('jwt', res.token);
+          localStorage.setItem('jwt', res.token)
           setEmail(email)
           setLoggedIn(true)
           history.push('/')
         }
       })
       .catch((err) => {
-        if (err === 'error400') {
+        if (err === 400) {
           console.log('Не передано одно из полей: ' + err);
-        } else if (err === 'error401') {
-          console.log('Пользователь с таким email не найден: ' + err);
+        } else if (err === 401) {
+          console.log('Неправильные почта или пароль: ' + err);
         }
         console.log(err);
       })
@@ -183,10 +156,10 @@ function App() {
         history.push('/sign-in');
       })
       .catch((err) => {
-        if (err === 'error400') {
-          console.log('Не передано одно из полей: ' + err);
-        } else if (err === 'error401') {
-          console.log('Пользователь с таким email не найден: ' + err);
+        if (err === 400) {
+          console.log('потому что Не передано одно из полей: ' + err);
+        } else if (err === 401) {
+          console.log('потому что Пользователь с таким email не найден: ' + err);
         }
         setIsSuccess(false);
         console.log(err);
@@ -198,10 +171,10 @@ function App() {
   }
 
   function handleLogOut () {
-    setEmail('');
+    setEmail(null);
     setIsSuccess(false)
     setLoggedIn(false);
-    localStorage.removeItem('token');
+    localStorage.removeItem('jwt');
     history.push('/sign-in');
   }
 
