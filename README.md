@@ -1,8 +1,6 @@
 ### проект на Реакте с авторизацией и регистрацией
 
-Все запросы на авторизацию, регистрацию и проверку токена - через сервис `https://auth.nomoreparties.co`.
+https://nutkatuz.github.io/react-mesto-auth/ 
 
-
-
-
-Деплой https://create-react-app.dev/docs/deployment/#github-pages
+Все запросы на авторизацию, регистрацию и проверку токена - 
+через сервер `https://auth.nomoreparties.co`
