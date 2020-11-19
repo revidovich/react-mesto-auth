@@ -34,6 +34,7 @@ function AddPlacePopup({ isOpen, onClose, onAddCard }) {
     <PopupWithForm
       name='confirm'
       title='Новое место'
+      buttonText='Создать'
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
@@ -62,10 +63,7 @@ function AddPlacePopup({ isOpen, onClose, onAddCard }) {
           required />
         <span className='popup__error' />
       </label>
-      <button className='popup__button'
-        type='submit'
-        aria-label='Сохранить новую карточку'>Создать
-      </button>
+
     </PopupWithForm>
   )
 }

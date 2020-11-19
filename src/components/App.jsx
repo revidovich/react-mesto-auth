@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { api } from "../utils/api";
 import ProtectedRoute from "./ProtectedRoute";
@@ -78,7 +78,7 @@ function App() {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setInfoTooltipOpen(false);
-    setImgPopupOpen(false); // а чего я тупила-то раньше ))))) пипец) спасибо, Ирина )
+    setImgPopupOpen(false);
   }
   function handleCardClick(card) {
     setSelectedCard({ ...card});
@@ -187,10 +187,8 @@ function App() {
       .catch((err) => {
         if (err === 400) {
           console.log('Не передано одно из полей, либо пользователь уже существует');
-        } else if (err === 401) {
-          console.log('Пользователь с таким email не найден');
         }
-        console.log(err);
+        console.log(err); // при регистрации же не может быть 401 ошибки ?
         setIsSuccess(false);
       })
       .finally(() =>{
@@ -266,10 +264,6 @@ function App() {
                   <Login
                   onLogin={handleLogin}
                   />
-              </Route>
-
-              <Route>
-                {loggedIn ? <Redirect to='/' /> : <Redirect to='/sign-in' />}
               </Route>
           </Switch>
 

@@ -15,6 +15,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     <PopupWithForm
       name='update-avatar'
       title='Обновить аватар'
+      buttonText='Сохранить'
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
@@ -32,10 +33,6 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
         />
       </label>
 
-      <button className='popup__button'
-        type='submit'
-        aria-label='Обновить фото пользователя'
-      >Сохранить</button>
     </PopupWithForm>
   )
 }
