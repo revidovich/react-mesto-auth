@@ -9,17 +9,17 @@ function AddPlacePopup({ isOpen, onClose, onAddCard }) {
   });
 
   useEffect(() => {
+  if (isOpen === true) {
     setForm({
     name: '',
     link: ''
     });
+  }
   }, [isOpen])
 
-  function handleChange(e) {  // Обработчик изменения инпута обновляет стейт
+  function handleChange(e) {
     const input = e.target;
-    // const name = input.name;
-    // const value = input.value;
-    setForm({    // ( {...values, { [name]: value }} )
+    setForm({  // Обработчик изменения инпута обновляет стейт
       ...form,
       [input.name]: input.value
     });
